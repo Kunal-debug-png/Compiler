@@ -12,7 +12,7 @@ const executeJava = (filepath) => {
     const outPath = path.join(outputPath, `${jobId}.out`);
 
     return new Promise((resolve, reject) => {
-        exec(`javac "${filepath}" -d "${outPath}" && java -cp "${outputPath}" Main`, (error, stdout, stderr) => {
+        exec(`javac "${filepath}" -d "${outputPath}" && java -cp "${outputPath}" Main`, (error, stdout, stderr) => {
             if (error) {
                 reject(error);
                 return;
@@ -21,8 +21,14 @@ const executeJava = (filepath) => {
                 reject(stderr);
                 return;
             }
-            // Assuming successful execution if no errors are encountered
-            resolve(stdout);
+            
+            fs.writeFile(outPath, stdout, (err) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(outPath);
+            });
         });
     });
 }
