@@ -1,7 +1,9 @@
 const express= require("express");
+const cors=require("cors");
 const app=express();
 const { generateFile}=require('./generateFile');
 const {executeJava} = require("./executeJava");
+app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.get('/',(req,res)=>{
@@ -18,7 +20,7 @@ app.post("/run",async(req,res) => {
     //we need to run file and send the response
     return res.json({filepath,output});
 })
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(5000, () => {
+    console.log('Server is running on port 5000');
   });
   
